@@ -1,7 +1,6 @@
 plugins {
 	id 'fabric-loom' version '1.+'
 	id "io.github.p03w.machete" version "2.+"
-	id 'io.github.juuxel.loom-quiltflower' version '1.+'
 	id 'maven-publish'
 }
 
@@ -14,19 +13,12 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
-	maven {
-		name = 'ParchmentMC'
-		url = 'https://maven.parchmentmc.org'
-	}
 }
 
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings loom.layered() {
-		officialMojangMappings()
-		parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_mappings}@zip")
-	}
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
@@ -73,9 +65,11 @@ sourceSets {
 
 processResources {
 	inputs.property "version", project.version
+	inputs.property "modId", project.modId
 
 	filesMatching("fabric.mod.json") {
 		expand "version": project.version
+		expand "id": project.modId
 	}
 }
 
